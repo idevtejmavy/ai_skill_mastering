@@ -1,0 +1,59 @@
+{
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "brand": {
+    "primaryColor": "#0A66C2",
+    "accentColor": "#FFD166",
+    "textColor": "#000000",
+    "fontName": "Arial",
+    "logoId": "d370b38979f5",
+    "watermark": "VENDEZVOUSESHOP"
+  },
+  "voiceoverId": "a9e55e363209",
+  "fitToVoiceover": false,
+  "scenes": [
+    {
+      "mediaId": "b75b01eba9d6",
+      "durationSec": 2.4,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "50123a0d12f3",
+      "durationSec": 2.4,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "4512483e9d01",
+      "durationSec": 4.0,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "cbe174fb9b2f",
+      "durationSec": 3.2,
+      "effect": "kenburns"
+    }
+  ],
+  "captions": {
+    "mode": "lines",
+    "style": "box",
+    "boxColor": "#FFFFFF",
+    "textColor": "#000000",
+    "fontName": "Arial",
+    "lines": [
+      { "text": "Regarde-moi cette pépite !", "start": 0.0, "end": 2.7 },
+      { "text": "Le gel Jaysuing fait des miracles\nsur cicatrices et vergetures !", "start": 2.7, "end": 6.6 },
+      { "text": "Retrouve une peau lisse, douce\net éclatante en un rien de temps !", "start": 6.6, "end": 10.0 },
+      { "text": "Seulement 8 500 FCFA\nSur boutique-vendezvouse.com !", "start": 10.0, "end": 13.8 }
+    ]
+  },
+  "endCard": {
+    "title": "8 500 FCFA SEULEMENT",
+    "subtitle": "Livraison Rapide à Abidjan",
+    "cta": "COMMANDEZ SUR BOUTIQUE-VENDEZVOUSE.COM",
+    "durationSec": 2.8
+  },
+  "outputName": "pub-jaysuing-15s-finale-voix-africaine-9-16"
+}

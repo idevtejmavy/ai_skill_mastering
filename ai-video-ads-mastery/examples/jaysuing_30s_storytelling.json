@@ -1,0 +1,76 @@
+{
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "brand": {
+    "primaryColor": "#0A66C2",
+    "accentColor": "#FFD166",
+    "textColor": "#000000",
+    "fontName": "Arial",
+    "logoId": "d370b38979f5",
+    "watermark": "VENDEZVOUSESHOP"
+  },
+  "voiceoverId": "879ce8266a7a",
+  "fitToVoiceover": true,
+  "scenes": [
+    {
+      "mediaId": "b75b01eba9d6",
+      "durationSec": 5.0,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "6462cc94144a",
+      "durationSec": 5.0,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "50123a0d12f3",
+      "durationSec": 5.0,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "4512483e9d01",
+      "durationSec": 7.0,
+      "effect": "kenburns"
+    },
+    {
+      "mediaId": "cbe174fb9b2f",
+      "durationSec": 4.5,
+      "effect": "kenburns"
+    }
+  ],
+  "captions": {
+    "mode": "lines",
+    "style": "box",
+    "boxColor": "#FFFFFF",
+    "textColor": "#000000",
+    "fontName": "Arial",
+    "lines": [
+      { "text": "Regarde-moi cette pépite !", "start": 0.0, "end": 1.95 },
+      { "text": "Le gel anti-cicatrices et vergetures", "start": 1.95, "end": 4.25 },
+      { "text": "est enfin là !", "start": 4.25, "end": 5.50 },
+      { "text": "Avec sa composition,", "start": 5.50, "end": 6.85 },
+      { "text": "il fait des miracles sur ta peau !", "start": 6.85, "end": 9.10 },
+      { "text": "Fini les vieilles marques,", "start": 9.10, "end": 10.75 },
+      { "text": "retrouve un corps lisse,", "start": 10.75, "end": 12.30 },
+      { "text": "doux et éclatant", "start": 12.30, "end": 13.35 },
+      { "text": "en un rien de temps !", "start": 13.35, "end": 14.60 },
+      { "text": "Le tube de 50 ml", "start": 14.60, "end": 16.35 },
+      { "text": "est à seulement 8 500 francs CFA !", "start": 16.35, "end": 18.30 },
+      { "text": "Ça change la vie !", "start": 18.30, "end": 19.50 },
+      { "text": "Ne rate pas ça !", "start": 19.50, "end": 20.65 },
+      { "text": "Commande sur boutiquevendezvous.com", "start": 20.65, "end": 22.50 },
+      { "text": "ou sur le numéro WhatsApp", "start": 22.50, "end": 24.15 },
+      { "text": "pour une livraison rapide assurée !", "start": 24.15, "end": 26.24 }
+    ]
+  },
+  "endCard": {
+    "title": "8 500 FCFA SEULEMENT",
+    "subtitle": "Livraison Rapide à Abidjan",
+    "cta": "COMMANDEZ SUR BOUTIQUE-VENDEZVOUSE.COM",
+    "durationSec": 3.0
+  },
+  "outputName": "pub-jaysuing-voix-africaine-exacte-subtitles-tiktok-9-16"
+}
