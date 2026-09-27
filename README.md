@@ -17,22 +17,30 @@ Ce dépôt codifie cette expertise en un système reproductible, modulaire et au
 ```
 E:\Antigrativty\antigravity_skill\
 ├── README.md                                  # Présentation globale du projet
-└── ai-video-ads-mastery\                      # Skill principal de production vidéo
-    ├── SKILL.md                               # Guide maître d'entraînement et règles d'or
+├── ai-video-ads-mastery\                      # Skill de production de vidéos publicitaires UGC & Direct Response
+│   ├── SKILL.md                               # Guide maître d'entraînement et règles d'or vidéo
+│   ├── references\                            # Psychologie de rétention, voix-off, sous-titres ASS
+│   ├── scripts\                               # Scripts tts_generate, subtitle_sync, render_video
+│   └── examples\                              # Configurations JSON et bibliothèque de prompts
+├── ai-marketing-posters-mastery\              # Skill de création d'affiches publicitaires & bannières e-commerce
+│   ├── SKILL.md                               # Guide maître d'affiches haute conversion & lois visuelles
+│   ├── references\
+│   │   ├── poster_copywriting_frameworks.md   # Formule H.O.O.K. et accroches publicitaires
+│   │   └── conversion_badges_and_cta.md       # Badges réassurance locale (COD, 24h, WhatsApp, Prix)
+│   ├── scripts\
+│   │   ├── composite_poster.js                # Moteur Playwright/HTML5 d'assemblage d'affiches HD
+│   │   └── composite_multi_poster.js          # Assemblage de posters multi-variations
+│   ├── workflow_n8n_affiche_ecommerce.json    # Workflow n8n prêt à importer
+│   └── examples\
+│       ├── poster_config_example.json         # Modèle de configuration produit & marque
+│       └── prompts_library_posters.md         # Bibliothèque de prompts par niche (Cosmétique, Food, Tech, Voyage)
+└── pinterest-poster-enhancer\                 # Skill d'analyse et d'extraction de tendances Pinterest
+    ├── SKILL.md                               # Guide d'enrichissement créatif et adaptation de styles
     ├── references\
-    │   ├── storytelling_frameworks.md         # Psychologie de rétention (PAS, Hook, 15s vs 30s)
-    │   ├── voiceover_engineering.md           # Audio Profiles, Director's Notes & Synthèse Vocale
-    │   ├── subtitles_and_typography.md        # Formule du badge blanc TikTok (ASS BorderStyle 3)
-    │   ├── video_factory_api.md               # Spécification d'assemblage du moteur Video-Factory
-    │   └── n8n_pipeline_architecture.md       # Architecture du workflow n8n (10 étapes)
-    ├── scripts\
-    │   ├── tts_generate.py                    # Génération de voix-off IA avec profil directorial
-    │   ├── subtitle_sync.py                   # Alignement temporel des sous-titres au centième
-    │   └── render_video.py                    # Déclencheur API de rendu MP4
-    └── examples\
-        ├── jaysuing_15s_ugc.json              # Exemple de rendu JSON pour 15s Flash UGC
-        ├── jaysuing_30s_storytelling.json     # Exemple de rendu JSON pour 30s Storytelling PAS
-        └── prompts_library.md                 # Bibliothèque de prompts pour Claude, GPT-4o, Gemini
+    │   ├── design_archetypes.md               # Archétypes graphiques et moodboards e-commerce
+    │   └── query_recipes.md                   # Requêtes de recherche haute performance
+    └── scripts\
+        └── search_pinterest.js                # Automatisation de recherche et scraping visuel
 ```
 
 ---

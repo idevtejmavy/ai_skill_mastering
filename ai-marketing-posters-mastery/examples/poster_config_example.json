@@ -1,0 +1,33 @@
+{
+  "product": {
+    "name": "Spray Croissance Cheveux et Barbe West&Month",
+    "volume": "30 ml",
+    "price": "8 500 FCFA",
+    "category": "Soins Capillaires"
+  },
+  "brand": {
+    "name": "VENDEZ-VOUS eSHOP",
+    "sub": "Produit 100% Authentique",
+    "logoPath": "E:/Documents/PRJ_VENDEZVOUSESHOP/LOGO/vesion_carree v2.jpg"
+  },
+  "visual": {
+    "aspectRatio": "3:4",
+    "resolution": {
+      "width": 1080,
+      "height": 1440
+    },
+    "headline": "POUSSE RAPIDE & ANTI-CHUTE",
+    "subtitle": "BARBE & CHEVEUX",
+    "ingredientsBadge": "Formule Naturelle à base de Gingembre & Ginseng"
+  },
+  "reassurance": {
+    "delivery": "🚚 Livraison 24h Abidjan",
+    "payment": "💵 Paiement à la livraison (COD)",
+    "website": "boutique-vendezvouse.com"
+  },
+  "cta": {
+    "whatsapp": "+225 05 04 59 45 20",
+    "whatsappUrl": "https://wa.me/2250504594520",
+    "shopUrl": "https://boutique-vendezvouse.com/p/spray-croissance-cheveux-et-barbe-west-month-30-ml"
+  }
+}

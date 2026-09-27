@@ -1,0 +1,489 @@
+{
+  "id": "vvsAffPubEcom01",
+  "name": "Pipeline Affiches Pub E-Commerce & Facebook Ads (Mono & Multi-Produits) - VVS",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "creation-affiche-pub",
+        "formTitle": "Créateur d'Affiches Publicitaires E-Commerce VVS",
+        "formDescription": "Générez automatiquement une affiche publicitaire haute conversion (Mono ou Multi-produits) et le texte de vente Facebook Ads.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Type de Campagne",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Multi-Produits (2 à 3 articles comparatifs ex: Laptops, Téléphones)",
+                    "value": "multi"
+                  },
+                  {
+                    "option": "Mono-Produit (1 article avec modèle humain ou studio)",
+                    "value": "mono"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Titre Général ou Arrivage",
+              "fieldType": "text",
+              "placeholder": "Ex: 3 LAPTOPS PRO & MULTIMÉDIA ou ARRIVAGE EXCLUSIF"
+            },
+            {
+              "fieldLabel": "Produit 1 - Nom",
+              "fieldType": "text",
+              "requiredField": true,
+              "placeholder": "Ex: Lenovo ThinkPad E540"
+            },
+            {
+              "fieldLabel": "Produit 1 - Prix en FCFA",
+              "fieldType": "text",
+              "requiredField": true,
+              "placeholder": "Ex: 140 000 FCFA"
+            },
+            {
+              "fieldLabel": "Produit 1 - Fiche Technique & Points Clés",
+              "fieldType": "textarea",
+              "placeholder": "Intel Core i5, 8 Go RAM, 500 Go Stockage, Écran 15.6 pouces"
+            },
+            {
+              "fieldLabel": "Produit 1 - Chemin ou URL Image",
+              "fieldType": "text"
+            },
+            {
+              "fieldLabel": "Produit 2 - Nom (Optionnel si Mono)",
+              "fieldType": "text",
+              "placeholder": "Ex: Apple MacBook Pro 13 (2019)"
+            },
+            {
+              "fieldLabel": "Produit 2 - Prix en FCFA",
+              "fieldType": "text",
+              "placeholder": "Ex: 350 000 FCFA"
+            },
+            {
+              "fieldLabel": "Produit 2 - Fiche Technique",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "Produit 2 - Chemin ou URL Image",
+              "fieldType": "text"
+            },
+            {
+              "fieldLabel": "Produit 3 - Nom (Optionnel)",
+              "fieldType": "text",
+              "placeholder": "Ex: Lenovo K21 Slim"
+            },
+            {
+              "fieldLabel": "Produit 3 - Prix en FCFA",
+              "fieldType": "text"
+            },
+            {
+              "fieldLabel": "Produit 3 - Fiche Technique",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "Produit 3 - Chemin ou URL Image",
+              "fieldType": "text"
+            },
+            {
+              "fieldLabel": "Modèle Humain (Si Mono-Produit)",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "Homme Africain Barbe Soignée", "value": "homme_barbe" },
+                  { "option": "Femme Africaine Volume Afro", "value": "femme_afro" },
+                  { "option": "Packshot Studio Épuré (Sans Humain)", "value": "studio_epure" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Détourer Automatiquement les Photos (Rembg)",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "Oui (Supprimer l'arrière-plan de prise de vue)", "value": "true" },
+                  { "option": "Non (Images déjà détourées ou fond conservé)", "value": "false" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Numéro WhatsApp VVS",
+              "fieldType": "text",
+              "placeholder": "+225 05 04 59 45 20"
+            },
+            {
+              "fieldLabel": "Numéro WhatsApp pour Notification / Validation",
+              "fieldType": "text",
+              "placeholder": "2250504594520"
+            }
+          ]
+        },
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-form-trigger",
+      "name": "1a. Formulaire Manuel n8n",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [120, 260]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook-produit-eshop",
+        "options": {}
+      },
+      "id": "node-webhook-eshop",
+      "name": "1b. Webhook Catalogue E-Shop (Auto)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [120, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// Détecter si l'entrée provient du formulaire manuel ou du webhook boutique\nconst isWebhook = !!item.body;\nconst data = isWebhook ? item.body : item;\n\nconst campaignType = data['Type de Campagne'] || (data.products && data.products.length > 1 ? 'multi' : (data['Produit 2 - Nom'] ? 'multi' : 'mono'));\nconst generalTitle = data['Titre Général ou Arrivage'] || data.title || 'ARRIVAGE EXCLUSIF';\nconst whatsapp = data['Numéro WhatsApp VVS'] || '+225 05 04 59 45 20';\nconst notifyPhone = data['Numéro WhatsApp pour Notification / Validation'] || '2250504594520';\nconst delivery = data['Rassurance Livraison'] || '🚚 Livraison 24h|Abidjan & Partout en CI';\nconst payment = data['Rassurance Paiement'] || '💵 Paiement à la Livraison|Vérifiez avant de payer';\nconst autoRembg = data[\"Détourer Automatiquement les Photos (Rembg)\"] === 'true' || data.autoRembg === true;\nconst audience = data['Modèle Humain (Si Mono-Produit)'] || data.audience || 'homme_barbe';\n\nconst products = [];\n\nif (data['Produit 1 - Nom'] || data.productName) {\n  const name = data['Produit 1 - Nom'] || data.productName;\n  const price = data['Produit 1 - Prix en FCFA'] || data.price || 'Prix sur demande';\n  const rawSpecs = data['Produit 1 - Fiche Technique & Points Clés'] || data.specs || data.description || '';\n  const specs = typeof rawSpecs === 'string' ? rawSpecs.split(/[,\\n]/).map(s => s.trim()).filter(Boolean) : rawSpecs;\n  const img = data['Produit 1 - Chemin ou URL Image'] || data.image || '';\n  products.push({ name, price, specs, image: img, tag: 'Bureautique Pro', featured: false });\n}\n\nif (data['Produit 2 - Nom']) {\n  const name = data['Produit 2 - Nom'];\n  const price = data['Produit 2 - Prix en FCFA'] || '';\n  const rawSpecs = data['Produit 2 - Fiche Technique'] || '';\n  const specs = rawSpecs.split(/[,\\n]/).map(s => s.trim()).filter(Boolean);\n  const img = data['Produit 2 - Chemin ou URL Image'] || '';\n  products.push({ name, price, specs, image: img, tag: '⭐ Coup de Cœur', featured: true });\n}\n\nif (data['Produit 3 - Nom']) {\n  const name = data['Produit 3 - Nom'];\n  const price = data['Produit 3 - Prix en FCFA'] || '';\n  const rawSpecs = data['Produit 3 - Fiche Technique'] || '';\n  const specs = rawSpecs.split(/[,\\n]/).map(s => s.trim()).filter(Boolean);\n  const img = data['Produit 3 - Chemin ou URL Image'] || '';\n  products.push({ name, price, specs, image: img, tag: 'Ultra-Nomade', featured: false });\n}\n\nconst isMulti = campaignType === 'multi' || products.length > 1;\n\nreturn {\n  json: {\n    isMulti,\n    campaignType,\n    generalTitle,\n    products,\n    whatsapp,\n    notifyPhone,\n    delivery,\n    payment,\n    autoRembg,\n    audience,\n    productsCount: products.length,\n    productsSummary: products.map(p => `- ${p.name} (${p.price}) : ${(p.specs || []).join(', ')}`).join('\\n')\n  }\n};"
+      },
+      "id": "node-unify-inputs",
+      "name": "2. Formatage & Normalisation",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [380, 380]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.isMulti }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "node-route-mode",
+      "name": "3. Aiguillage (Mono vs Multi)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [620, 380]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $env.GEMINI_API_KEY || $env.GOOGLE_AI_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"Tu es le directeur marketing publicitaire de VENDEZ-VOUS eSHOP en Côte d'Ivoire.\\n\\nSélection Multi-Produits ({{ $json.productsCount }} articles) :\\n{{ $json.productsSummary }}\\nTitre suggéré : {{ $json.generalTitle }}\\nWhatsApp : {{ $json.whatsapp }}\\n\\nGénère un JSON strict (sans balise markdown) :\\n1. headline : Titre d'affiche majuscule ultra-vendeur (ex: 'DUO LENOVO BUSINESS')\\n2. subtitle : Sous-titre valorisant la fiabilité et les prix (ex: 'Performance, Mobilité & Garantie Totale')\\n3. flashBadge : Accroche courte (ex: '🔥 ARRIVAGE EXCLUSIF • QUANTITÉS LIMITÉES 🔥')\\n4. adCopyFacebook : Le texte de vente complet pour Facebook Ads avec émojis, présentation de chaque produit avec son prix en FCFA, livraison 24h Abidjan, paiement à la livraison, et lien WhatsApp {{ $json.whatsapp }}\"\n        }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"responseMimeType\": \"application/json\"\n  }\n}",
+        "options": {}
+      },
+      "id": "node-gemini-multi",
+      "name": "4a. Gemini Stratégie Multi-Produits",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 260]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst os = require('os');\n\nconst geminiRes = $input.first().json;\nconst meta = $('2. Formatage & Normalisation').first().json;\n\nlet parsed = {};\ntry {\n  const rawText = geminiRes.candidates[0].content.parts[0].text;\n  parsed = JSON.parse(rawText);\n} catch (e) {\n  parsed = {\n    headline: meta.generalTitle || 'ARRIVAGE EXCLUSIF',\n    subtitle: 'Performance, Robustesse & Garantie au Meilleur Prix',\n    flashBadge: '🔥 ARRIVAGE EXCLUSIF • QUANTITÉS LIMITÉES 🔥',\n    adCopyFacebook: 'Découvrez notre sélection spéciale au meilleur prix du marché !'\n  };\n}\n\nconst tmpDir = os.tmpdir();\nconst configJsonPath = path.join(tmpDir, `multi_prod_config_${Date.now()}.json`);\nfs.writeFileSync(configJsonPath, JSON.stringify(meta.products, null, 2), 'utf8');\n\nconst finalPosterPath = path.join(tmpDir, `affiche_multi_vvs_${Date.now()}.png`);\n\nreturn {\n  json: {\n    ...meta,\n    headline: parsed.headline,\n    subtitle: parsed.subtitle,\n    flashBadge: parsed.flashBadge,\n    adCopyFacebook: parsed.adCopyFacebook,\n    configJsonPath: configJsonPath.replace(/\\\\/g, '/'),\n    finalPosterPath: finalPosterPath.replace(/\\\\/g, '/')\n  }\n};"
+      },
+      "id": "node-prep-multi",
+      "name": "5a. Préparation Config Multi",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1120, 260]
+    },
+    {
+      "parameters": {
+        "command": "=node \"E:/Antigrativty/.agents/skills/ai-marketing-posters-mastery/scripts/composite_multi_poster.js\" --config \"{{ $json.configJsonPath }}\" --title \"{{ $json.headline }}\" --subtitle \"{{ $json.subtitle }}\" --flash \"{{ $json.flashBadge }}\" --whatsapp \"{{ $json.whatsapp }}\" --logo \"E:/Documents/PRJ_VENDEZVOUSESHOP/LOGO/vesion_carree v2.jpg\" --output \"{{ $json.finalPosterPath }}\" {{ $json.autoRembg ? '--auto-rembg' : '' }}"
+      },
+      "id": "node-render-multi",
+      "name": "6a. Playwright Rendu Multi",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1360, 260]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $env.GEMINI_API_KEY || $env.GOOGLE_AI_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"Tu es le directeur artistique de VENDEZ-VOUS eSHOP.\\n\\nProduit : {{ $json.products[0].name }}\\nPrix : {{ $json.products[0].price }}\\nAudience : {{ $json.audience }}\\n\\nGénère un JSON strict sans balise markdown :\\n1. headline : Titre choc (ex: 'POUSSE RAPIDE & ANTI-CHUTE')\\n2. subtitle : Sous-titre court\\n3. adCopyFacebook : Texte Facebook Ads complet avec bénéfices et WhatsApp {{ $json.whatsapp }}\\n4. imagenPrompt : Prompt en anglais pour Google Imagen 3 (modèle selon {{ $json.audience }}, flacon sur podium de luxe, éclairage studio commercial 8k)\"\n        }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"responseMimeType\": \"application/json\"\n  }\n}",
+        "options": {}
+      },
+      "id": "node-gemini-mono",
+      "name": "4b. Gemini Stratégie Mono-Produit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 500]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $env.GEMINI_API_KEY || $env.GOOGLE_AI_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"instances\": [\n    {\n      \"prompt\": \"{{ $json.imagenPrompt }}\"\n    }\n  ],\n  \"parameters\": {\n    \"sampleCount\": 1,\n    \"aspectRatio\": \"3:4\",\n    \"personGeneration\": \"allow_adult\"\n  }\n}",
+        "options": {}
+      },
+      "id": "node-imagen-mono",
+      "name": "5b. Google Imagen 3 (Fond Photoréaliste)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 500]
+    },
+    {
+      "parameters": {
+        "command": "=node \"E:/Antigrativty/.agents/skills/ai-marketing-posters-mastery/scripts/composite_poster.js\" --logo \"E:/Documents/PRJ_VENDEZVOUSESHOP/LOGO/vesion_carree v2.jpg\" --brand \"VENDEZ-VOUS eSHOP\" --title \"{{ $json.headline }}\" --subtitle \"{{ $json.subtitle }}\" --price \"{{ $json.products[0].price }}\" --whatsapp \"{{ $json.whatsapp }}\" --output \"{{ $json.finalPosterPath }}\""
+      },
+      "id": "node-render-mono",
+      "name": "6b. Playwright Rendu Mono",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1360, 500]
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.finalPosterPath }}",
+        "options": {}
+      },
+      "id": "node-read-poster",
+      "name": "7. Lecture Fichier Affiche",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [1620, 380]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Affiche Publicitaire Prête - VVS</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #080c14; color: #fff; padding: 40px; margin: 0; }\n    .container { max-width: 950px; margin: 0 auto; background: #0f1624; border-radius: 16px; padding: 32px; border: 1px solid #00F0FF; box-shadow: 0 10px 40px rgba(0, 240, 255, 0.15); }\n    h1 { color: #00F0FF; margin-top: 0; font-size: 26px; }\n    .grid { display: flex; gap: 30px; margin-top: 25px; align-items: flex-start; }\n    .poster-preview { flex: 1.1; }\n    .poster-preview img { width: 100%; border-radius: 12px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); }\n    .ad-copy { flex: 1; background: #080b11; padding: 22px; border-radius: 12px; border: 1px solid #1a2538; }\n    textarea { width: 100%; height: 380px; background: transparent; color: #e2e8f0; border: none; font-size: 13.5px; line-height: 1.6; resize: none; font-family: inherit; }\n    .btn { display: block; text-align: center; background: linear-gradient(90deg, #25D366, #128C7E); color: #fff; padding: 14px 24px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 18px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>⚡ Votre Affiche Publicitaire VVS est Prête !</h1>\n    <p>Affiche haute conversion générée par le pipeline IA & Playwright.</p>\n    <div class=\"grid\">\n      <div class=\"poster-preview\">\n        <img src=\"data:image/png;base64,{{ $binary.data.data }}\" alt=\"Affiche Finale\" />\n        <a class=\"btn\" href=\"data:image/png;base64,{{ $binary.data.data }}\" download=\"affiche_vvs_finale.png\">📥 Télécharger en Haute Résolution (2160x2880)</a>\n      </div>\n      <div class=\"ad-copy\">\n        <h3>📋 Texte Facebook Ads Prêt à Copier :</h3>\n        <textarea readonly>{{ $('5a. Préparation Config Multi').first()?.json?.adCopyFacebook || $('4b. Gemini Stratégie Mono-Produit').first()?.json?.adCopyFacebook }}</textarea>\n      </div>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "node-respond-html",
+      "name": "8a. Affichage & Téléchargement",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1900, 240]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:8985/message/sendMedia/VendezVouseStore",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY || '4C37FF402242-449F-A7DB-5F27E3CAF41F' }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $('2. Formatage & Normalisation').first().json.notifyPhone || '2250504594520' }}\",\n  \"mediaMessage\": {\n    \"mediatype\": \"image\",\n    \"caption\": \"🔥 NOUVELLE AFFICHE VVS GÉNÉRÉE !\\n\\n{{ $('5a. Préparation Config Multi').first()?.json?.adCopyFacebook || $('4b. Gemini Stratégie Mono-Produit').first()?.json?.adCopyFacebook || 'Valider pour diffusion Facebook Ads ?' }}\",\n    \"media\": \"data:image/png;base64,{{ $binary.data.data }}\"\n  }\n}",
+        "options": {}
+      },
+      "id": "node-notify-whatsapp",
+      "name": "8b. Notification WhatsApp (Validation)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1900, 420]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v19.0/me/photos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "access_token",
+              "value": "={{ $env.META_PAGE_ACCESS_TOKEN }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('5a. Préparation Config Multi').first()?.json?.adCopyFacebook || '' }}"
+            }
+          ]
+        },
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {}
+      },
+      "id": "node-publish-facebook",
+      "name": "8c. Publication Facebook (Meta API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1900, 600]
+    }
+  ],
+  "connections": {
+    "1a. Formulaire Manuel n8n": {
+      "main": [
+        [
+          {
+            "node": "2. Formatage & Normalisation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1b. Webhook Catalogue E-Shop (Auto)": {
+      "main": [
+        [
+          {
+            "node": "2. Formatage & Normalisation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Formatage & Normalisation": {
+      "main": [
+        [
+          {
+            "node": "3. Aiguillage (Mono vs Multi)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Aiguillage (Mono vs Multi)": {
+      "main": [
+        [
+          {
+            "node": "4a. Gemini Stratégie Multi-Produits",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "4b. Gemini Stratégie Mono-Produit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4a. Gemini Stratégie Multi-Produits": {
+      "main": [
+        [
+          {
+            "node": "5a. Préparation Config Multi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5a. Préparation Config Multi": {
+      "main": [
+        [
+          {
+            "node": "6a. Playwright Rendu Multi",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6a. Playwright Rendu Multi": {
+      "main": [
+        [
+          {
+            "node": "7. Lecture Fichier Affiche",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4b. Gemini Stratégie Mono-Produit": {
+      "main": [
+        [
+          {
+            "node": "5b. Google Imagen 3 (Fond Photoréaliste)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5b. Google Imagen 3 (Fond Photoréaliste)": {
+      "main": [
+        [
+          {
+            "node": "6b. Playwright Rendu Mono",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6b. Playwright Rendu Mono": {
+      "main": [
+        [
+          {
+            "node": "7. Lecture Fichier Affiche",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7. Lecture Fichier Affiche": {
+      "main": [
+        [
+          {
+            "node": "8a. Affichage & Téléchargement",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "8b. Notification WhatsApp (Validation)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "8c. Publication Facebook (Meta API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {}
+}
